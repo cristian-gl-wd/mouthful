@@ -1,8 +1,14 @@
 @if (schema(); as sch) { @for (child of sch.layout.children; track child) {
-
 <ng-container [ngSwitch]="child.component">
   <app-generic-card *ngSwitchCase="'primeng-card'" [config]="child.config"> </app-generic-card>
 
-  <p *ngSwitchDefault>¡Oye! No conozco la pieza llamada: {{ child.component }}</p>
+  <app-generic-table
+    *ngSwitchCase="'data-table'"
+    [config]="child.config"
+    [dataSource]="child.dataSource"
+  >
+  </app-generic-table>
+
+  <p *ngSwitchDefault>...</p>
 </ng-container>
 } }

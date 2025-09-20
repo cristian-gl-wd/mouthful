@@ -1,31 +1,30 @@
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
 import { ViewSchemaService, ViewSchema } from '../../services/view-schema.service';
-import { GenericCardComponent } from '../../../components/generic-card/generic-card.component'; // Importaremos esto luego
+
+import { GenericCardComponent } from '../../../components/generic-card/generic-card.component';
+import { GenericTableComponent } from '../../../components/generic-table/generic-table.component';
 
 @Component({
   selector: 'app-dynamic-view-renderer',
   standalone: true,
-  // Aquí le decimos al robot qué piezas de LEGO conoce
-  imports: [CommonModule, GenericCardComponent],
+  imports: [CommonModule, GenericCardComponent, GenericTableComponent],
   templateUrl: './dynamic-view-renderer.component.html',
-  styleUrls: ['./dynamic-view-renderer.component.scss']
 })
 export class DynamicViewRendererComponent implements OnInit {
-  @Input() viewId!: string; // El robot recibe como orden el NOMBRE de la receta a construir
-
-  // Inyectamos a nuestro mayordomo de recetas
   private schemaService = inject(ViewSchemaService);
-
-  // Una "pizarra mágica" donde el robot guarda la receta. Si cambia, se reconstruye solo.
+  private route = inject(ActivatedRoute);
   schema = signal<ViewSchema | null>(null);
 
   ngOnInit(): void {
-    // Al encenderse, el robot pide la receta al mayordomo
-    this.schemaService.getViewSchema(this.viewId).subscribe(schema => {
-      if (schema) {
-        this.schema.set(schema); // Y la apunta en su pizarra mágica
-      }
-    });
+    const viewId = this.route.snapshot.data['viewId'];
+
+    if (viewId) {
+      this.schemaService.getViewSchema(viewId).subscribe((schema) => {
+        this.schema.set(schema);
+      });
+    }
   }
 }
