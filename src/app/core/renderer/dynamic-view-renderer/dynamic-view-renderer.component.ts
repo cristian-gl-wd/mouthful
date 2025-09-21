@@ -1,62 +1,30 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { map, switchMap } from 'rxjs/operators';
 
-import { ViewSchema, ViewSchemaService } from '../../services/view-schema.service';
-
-import { GenericButtonComponent } from '../../../components/generic-button/generic-button.component';
 import { GenericCardComponent } from '../../../components/generic-card/generic-card.component';
-import { GenericInputComponent } from '../../../components/generic-input/generic-input.component';
+import { GenericFormComponent } from '../../../components/generic-form/generic-form.component';
 import { GenericTableComponent } from '../../../components/generic-table/generic-table.component';
+import { GenericButtonComponent } from '../../../components/generic-button/generic-button.component';
+
+import { ViewSchemaService } from '../../services/view-schema.service';
 
 @Component({
   selector: 'app-dynamic-view-renderer',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    GenericCardComponent,
-    GenericTableComponent,
-    GenericButtonComponent,
-    GenericInputComponent,
-  ],
+  imports: [GenericFormComponent, GenericCardComponent, GenericTableComponent, GenericButtonComponent],
   templateUrl: './dynamic-view-renderer.component.html',
 })
-export class DynamicViewRendererComponent implements OnInit {
-  private schemaService = inject(ViewSchemaService);
+export class DynamicViewRendererComponent {
+  private viewSchemaService = inject(ViewSchemaService);
   private route = inject(ActivatedRoute);
-  private fb = inject(FormBuilder);
 
-  schema = signal<ViewSchema | null>(null);
-  form = this.fb.group({});
-
-  ngOnInit(): void {
-    const viewId = this.route.snapshot.data['viewId'];
-    if (viewId) {
-      this.schemaService.getViewSchema(viewId).subscribe((schema) => {
-        if (schema) {
-          this.buildForm(schema);
-          this.schema.set(schema);
-        }
-      });
-    }
-  }
-
-  buildForm(schema: ViewSchema): void {
-    const formControls: { [key: string]: FormControl } = {};
-    schema.layout.children?.forEach((child) => {
-      if (child.component === 'text-input') {
-        const validators = [Validators.required];
-        if (child.config.type === 'number') {
-          validators.push(Validators.min(1));
-        }
-
-        formControls[child.config.name] = new FormControl('', validators);
-      }
-    });
-    this.form = this.fb.group(formControls);
-  }
-
-  getControl(name: string): FormControl {
-    return this.form.get(name) as FormControl;
-  }
+  schema = toSignal(
+    this.route.data.pipe(
+      map(data => data['viewId']),
+      switchMap(id => this.viewSchemaService.getViewSchema(id))
+    ), 
+    { initialValue: null }
+  );
 }

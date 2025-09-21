@@ -1,0 +1,8 @@
+<form [formGroup]="formGroup" (ngSubmit)="handleFormSubmit()">
+  @for (child of children; track child) { @switch (child.component) { @case ('text-input') {
+  <app-generic-input [config]="child.config" [control]="getControl(child.config.name)">
+  </app-generic-input>
+  } @case ('button') {
+  <app-generic-button [config]="child.config" [action]="child.action"> </app-generic-button>
+  } } }
+</form>

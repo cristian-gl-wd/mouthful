@@ -22,21 +22,22 @@ const FAKE_DASHBOARD_SCHEMA: ViewSchema = {
       {
         component: 'primeng-card',
         config: {
-          title: '¡Plataforma Mágica!',
-          subtitle: 'Esta tarjeta se ha construido sola',
-          content: 'Y la tabla de abajo se ha llenado con datos de Firestore. ¡Todo definido desde este JSON!'
-        }
+          title: 'Magic platform!',
+          subtitle: 'This card has built itself from JSON',
+          content:
+            'And the table below has been populated with data from Firestore. All defined from this JSON!',
+        },
       },
       {
         component: 'button',
         config: {
-          label: 'Añadir Nueva Receta',
-          icon: 'pi pi-plus'
+          label: 'Add new recipe',
+          icon: 'pi pi-plus',
         },
         action: {
           type: 'navigate',
-          payload: '/recipes/new'
-        }
+          payload: '/recipes/new',
+        },
       },
       {
         component: 'data-table',
@@ -44,73 +45,70 @@ const FAKE_DASHBOARD_SCHEMA: ViewSchema = {
           columns: [
             { field: 'name', header: 'Nombre' },
             { field: 'cuisine', header: 'Cocina' },
-            { field: 'prepTime', header: 'Tiempo (min)' }
-          ]
+            { field: 'prepTime', header: 'Tiempo (min)' },
+          ],
         },
         dataSource: {
           collection: 'recipes',
-          limit: 5
-        }
-      }
-    ]
-  }
+          limit: 5,
+        },
+      },
+    ],
+  },
 };
 
 const FAKE_FORM_SCHEMA: ViewSchema = {
   viewId: 'recipe-form-view',
   layout: {
-    component: 'form-layout',
+    component: 'form-page-layout',
     children: [
       {
         component: 'primeng-card',
         config: {
-          title: 'Nueva Receta',
-          subtitle: 'Rellena los datos para añadir una nueva receta a la colección.'
-        }
-      },
-      {
-        component: 'text-input',
-        config: {
-          name: 'name',
-          label: 'Nombre de la Receta'
-        }
-      },
-      {
-        component: 'text-input',
-        config: {
-          name: 'cuisine',
-          label: 'Tipo de Cocina'
-        }
-      },
-      {
-        component: 'text-input',
-        config: {
-          name: 'prepTime',
-          label: 'Tiempo de Preparación (min)',
-          type: 'number'
-        }
-      },
-      {
-        component: 'button',
-        config: {
-          label: 'Guardar Receta',
-          icon: 'pi pi-check'
+          title: 'New recipe',
+          subtitle: 'Complete the details to add a new recipe to the collection',
         },
+      },
+      {
+        component: 'generic-form',
         action: {
           type: 'submit-form',
-          payload: 'recipes'
-        }
-      }
-    ]
-  }
+          payload: {
+            collection: 'recipes',
+            onSuccess: {
+              type: 'navigate',
+              payload: '/dashboard',
+            },
+          },
+        },
+        children: [
+          {
+            component: 'text-input',
+            config: { name: 'name', label: 'Recipe name' },
+          },
+          {
+            component: 'text-input',
+            config: { name: 'cuisine', label: 'Origin' },
+          },
+          {
+            component: 'text-input',
+            config: { name: 'prepTime', label: 'Preparation time (min)', type: 'number' },
+          },
+          {
+            component: 'button',
+            config: { label: 'Save recipe', icon: 'pi pi-check', type: 'submit' },
+          },
+        ],
+      },
+    ],
+  },
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ViewSchemaService {
-
-  constructor() { }
+  constructor() {}
 
   getViewSchema(viewId: string): Observable<ViewSchema | null> {
     if (viewId === 'dashboard-view') {

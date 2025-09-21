@@ -3,16 +3,17 @@
     @switch (child.component) {
       @case ('primeng-card') {
         <app-generic-card [config]="child.config"></app-generic-card>
-      } @case ('data-table') {
+      }
+      @case ('data-table') {
         <app-generic-table [config]="child.config" [dataSource]="child.dataSource"></app-generic-table>
-      } @case ('button') {
+      }
+       @case ('button') {
         <app-generic-button [config]="child.config" [action]="child.action"></app-generic-button>
-      } @case ('text-input') {
-        <app-generic-input
-        [config]="child.config"
-        [control]="getControl(child.config.name)"
-        ></app-generic-input>
-      } @default {
+      }
+      @case ('generic-form') {
+        <app-generic-form [children]="child.children ?? []" [action]="child.action"></app-generic-form>
+      }
+      @default {
         <p>Componente '{{ child.component }}' no reconocido.</p>
       }
     }

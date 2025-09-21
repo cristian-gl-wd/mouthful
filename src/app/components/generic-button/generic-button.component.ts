@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
@@ -13,11 +13,14 @@ import { Action, ActionService } from '../../core/services/action.service';
 })
 export class GenericButtonComponent {
   @Input() config: any;
-  @Input() action!: Action;
+  @Input() action: Action | undefined;
 
   private actionService = inject(ActionService);
 
-  onClick(): void {
-    this.actionService.execute(this.action);
+  @HostListener('click')
+  onHostClick(): void {
+    if (this.action && this.config?.type !== 'submit') {
+      this.actionService.execute(this.action);
+    }
   }
 }
