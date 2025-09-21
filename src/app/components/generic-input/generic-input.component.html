@@ -1,0 +1,6 @@
+@if (config && control) {
+<div class="field my-3">
+  <label [for]="config.name">{{ config.label }}</label>
+  <input pInputText class="w-full" [id]="config.name" [formControl]="control" />
+</div>
+}

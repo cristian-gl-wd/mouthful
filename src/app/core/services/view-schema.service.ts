@@ -6,6 +6,7 @@ export interface ViewNode {
   config?: any;
   dataSource?: any;
   children?: ViewNode[];
+  action?: any;
 }
 
 export interface ViewSchema {
@@ -27,6 +28,17 @@ const FAKE_DASHBOARD_SCHEMA: ViewSchema = {
         }
       },
       {
+        component: 'button',
+        config: {
+          label: 'Añadir Nueva Receta',
+          icon: 'pi pi-plus'
+        },
+        action: {
+          type: 'navigate',
+          payload: '/recipes/new'
+        }
+      },
+      {
         component: 'data-table',
         config: {
           columns: [
@@ -44,6 +56,47 @@ const FAKE_DASHBOARD_SCHEMA: ViewSchema = {
   }
 };
 
+const FAKE_FORM_SCHEMA: ViewSchema = {
+  viewId: 'recipe-form-view',
+  layout: {
+    component: 'form-layout',
+    children: [
+      {
+        component: 'primeng-card',
+        config: {
+          title: 'Nueva Receta',
+          subtitle: 'Rellena los datos para añadir una nueva receta a la colección.'
+        }
+      },
+      {
+        component: 'text-input',
+        config: {
+          name: 'name',
+          label: 'Nombre de la Receta'
+        }
+      },
+      {
+        component: 'text-input',
+        config: {
+          name: 'cuisine',
+          label: 'Tipo de Cocina'
+        }
+      },
+      {
+        component: 'button',
+        config: {
+          label: 'Guardar Receta',
+          icon: 'pi pi-check'
+        },
+        action: {
+          type: 'submit-form',
+          payload: 'recipes'
+        }
+      }
+    ]
+  }
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -54,6 +107,9 @@ export class ViewSchemaService {
   getViewSchema(viewId: string): Observable<ViewSchema | null> {
     if (viewId === 'dashboard-view') {
       return of(FAKE_DASHBOARD_SCHEMA);
+    }
+    if (viewId === 'recipe-form-view') {
+      return of(FAKE_FORM_SCHEMA);
     }
     return of(null);
   }

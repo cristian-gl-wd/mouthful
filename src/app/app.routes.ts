@@ -13,5 +13,10 @@ export const routes: Routes = [
     data: {
       viewId: 'dashboard-view'
     }
+  },
+  {
+    path: 'recipes/new',
+    component: DynamicViewRendererComponent,
+    data: { viewId: 'recipe-form-view' }
   }
 ];

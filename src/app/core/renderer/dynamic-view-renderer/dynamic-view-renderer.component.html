@@ -9,6 +9,16 @@
   >
   </app-generic-table>
 
+  <app-generic-button *ngSwitchCase="'button'" [config]="child.config" [action]="child.action">
+  </app-generic-button>
+
+  <app-generic-input
+    *ngSwitchCase="'text-input'"
+    [config]="child.config"
+    [control]="getControl(child.config.name)"
+  >
+  </app-generic-input>
+
   <p *ngSwitchDefault>...</p>
 </ng-container>
 } }
