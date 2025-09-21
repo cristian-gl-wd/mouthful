@@ -83,6 +83,14 @@ const FAKE_FORM_SCHEMA: ViewSchema = {
         }
       },
       {
+        component: 'text-input',
+        config: {
+          name: 'prepTime',
+          label: 'Tiempo de Preparación (min)',
+          type: 'number'
+        }
+      },
+      {
         component: 'button',
         config: {
           label: 'Guardar Receta',

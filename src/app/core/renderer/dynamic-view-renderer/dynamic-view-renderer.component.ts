@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { ViewSchema, ViewSchemaService } from '../../services/view-schema.service';
@@ -13,7 +13,14 @@ import { GenericTableComponent } from '../../../components/generic-table/generic
 @Component({
   selector: 'app-dynamic-view-renderer',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GenericCardComponent, GenericTableComponent, GenericButtonComponent, GenericInputComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    GenericCardComponent,
+    GenericTableComponent,
+    GenericButtonComponent,
+    GenericInputComponent,
+  ],
   templateUrl: './dynamic-view-renderer.component.html',
 })
 export class DynamicViewRendererComponent implements OnInit {
@@ -27,7 +34,7 @@ export class DynamicViewRendererComponent implements OnInit {
   ngOnInit(): void {
     const viewId = this.route.snapshot.data['viewId'];
     if (viewId) {
-      this.schemaService.getViewSchema(viewId).subscribe(schema => {
+      this.schemaService.getViewSchema(viewId).subscribe((schema) => {
         if (schema) {
           this.buildForm(schema);
           this.schema.set(schema);
@@ -38,9 +45,14 @@ export class DynamicViewRendererComponent implements OnInit {
 
   buildForm(schema: ViewSchema): void {
     const formControls: { [key: string]: FormControl } = {};
-    schema.layout.children?.forEach(child => {
+    schema.layout.children?.forEach((child) => {
       if (child.component === 'text-input') {
-        formControls[child.config.name] = new FormControl('');
+        const validators = [Validators.required];
+        if (child.config.type === 'number') {
+          validators.push(Validators.min(1));
+        }
+
+        formControls[child.config.name] = new FormControl('', validators);
       }
     });
     this.form = this.fb.group(formControls);
