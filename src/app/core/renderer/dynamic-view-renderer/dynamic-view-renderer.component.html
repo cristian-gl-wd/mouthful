@@ -1,24 +1,20 @@
-@if (schema(); as sch) { @for (child of sch.layout.children; track child) {
-<ng-container [ngSwitch]="child.component">
-  <app-generic-card *ngSwitchCase="'primeng-card'" [config]="child.config"> </app-generic-card>
-
-  <app-generic-table
-    *ngSwitchCase="'data-table'"
-    [config]="child.config"
-    [dataSource]="child.dataSource"
-  >
-  </app-generic-table>
-
-  <app-generic-button *ngSwitchCase="'button'" [config]="child.config" [action]="child.action">
-  </app-generic-button>
-
-  <app-generic-input
-    *ngSwitchCase="'text-input'"
-    [config]="child.config"
-    [control]="getControl(child.config.name)"
-  >
-  </app-generic-input>
-
-  <p *ngSwitchDefault>...</p>
-</ng-container>
-} }
+@if (schema(); as sch) {
+  @for (child of sch.layout.children; track child) {
+    @switch (child.component) {
+      @case ('primeng-card') {
+        <app-generic-card [config]="child.config"></app-generic-card>
+      } @case ('data-table') {
+        <app-generic-table [config]="child.config" [dataSource]="child.dataSource"></app-generic-table>
+      } @case ('button') {
+        <app-generic-button [config]="child.config" [action]="child.action"></app-generic-button>
+      } @case ('text-input') {
+        <app-generic-input
+        [config]="child.config"
+        [control]="getControl(child.config.name)"
+        ></app-generic-input>
+      } @default {
+        <p>Componente '{{ child.component }}' no reconocido.</p>
+      }
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +13,6 @@ import { GenericTableComponent } from '../../../components/generic-table/generic
   selector: 'app-dynamic-view-renderer',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     GenericCardComponent,
     GenericTableComponent,

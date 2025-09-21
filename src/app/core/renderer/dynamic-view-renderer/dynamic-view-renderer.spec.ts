@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynamicViewRenderer } from './dynamic-view-renderer.component';
+import { DynamicViewRendererComponent } from './dynamic-view-renderer.component';
 
 describe('DynamicViewRenderer', () => {
-  let component: DynamicViewRenderer;
-  let fixture: ComponentFixture<DynamicViewRenderer>;
+  let component: DynamicViewRendererComponent;
+  let fixture: ComponentFixture<DynamicViewRendererComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicViewRenderer]
+      imports: [DynamicViewRendererComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DynamicViewRenderer);
+    fixture = TestBed.createComponent(DynamicViewRendererComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
