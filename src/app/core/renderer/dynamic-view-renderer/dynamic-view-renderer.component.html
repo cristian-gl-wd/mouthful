@@ -1,23 +1,5 @@
 @if (schema$ | async; as schema) {
-  @if (schema.children; as children) {
-    @for (child of children; track child) {
-      @switch (child.component) {
-        @case ('primeng-card') {
-          <app-generic-card [config]="child.config" />
-        } @case ('data-table') {
-          <app-generic-table [config]="child.config" [dataSource]="child.dataSource" />
-        } @case ('button') {
-          <app-generic-button [config]="child.config" [action]="child.action" />
-        } @case ('generic-form') {
-          <app-generic-form [children]="child.children ?? []" [action]="child.action" />
-        } @default {
-          <div style="border: 1px dashed red; padding: 1rem; margin: 1rem 0">
-            <strong>Componente Desconocido:</strong> {{ child.component }}
-          </div>
-        }
-      }
-    }
-  } @else { }
+  <ng-container [appDynamicComponent]="schema"></ng-container>
 } @else {
   <p>Cargando vista...</p>
 }

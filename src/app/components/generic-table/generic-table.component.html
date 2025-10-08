@@ -1,15 +1,15 @@
-<p-table [value]="(data$ | async) ?? []" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [value]="data()" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header">
     <tr>
-      @for (col of config.columns; track col.field) {
-      <th>{{ col.header }}</th>
+      @for (col of node.config?.['columns']; track col.field) {
+        <th [pSortableColumn]="col.field">{{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon></th>
       }
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData>
     <tr>
-      @for (col of config.columns; track col.field) {
-      <td>{{ rowData[col.field] }}</td>
+      @for (col of node.config?.['columns']; track col.field) {
+        <td>{{ rowData[col.field] }}</td>
       }
     </tr>
   </ng-template>

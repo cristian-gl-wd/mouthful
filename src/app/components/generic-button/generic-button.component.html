@@ -1,2 +1,5 @@
-<p-button [label]="config?.label" [type]="config?.type || 'button'" [icon]="config?.icon">
+<p-button 
+  [label]="node.config?.['label']" 
+  [icon]="node.config?.['icon']" 
+  (onClick)="onClick()">
 </p-button>

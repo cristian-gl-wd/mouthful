@@ -8,8 +8,10 @@ import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { es } from './core/locale/primeng-es';
 
-import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+import { routes } from './app.routes';
+import { componentMap } from './core/renderer/component-map';
+import { COMPONENT_MAP } from './core/renderer/component-map.token';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,5 +32,6 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    { provide: COMPONENT_MAP, useValue: componentMap },
   ],
 };

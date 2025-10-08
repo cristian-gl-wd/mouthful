@@ -1,12 +1,9 @@
-@if (config && control) {
-<div class="field my-3">
-  <label [for]="config.name">{{ config.label }}</label>
+<div [formGroup]="parentForm" class="field">
+  <label [for]="controlName">{{ node.config?.['label'] }}</label>
   <input
     pInputText
-    class="w-full"
-    [id]="config.name"
-    [formControl]="control"
-    [type]="config.type || 'text'"
+    [id]="controlName"
+    [formControlName]="controlName"
+    [placeholder]="node.config?.['placeholder']"
   />
 </div>
-}

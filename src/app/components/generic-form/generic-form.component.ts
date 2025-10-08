@@ -1,52 +1,38 @@
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActionService } from '../../core/services/action.service';
-
-import { GenericButtonComponent } from '../generic-button/generic-button.component';
-import { GenericInputComponent } from '../generic-input/generic-input.component';
+import { ViewNode } from '../../core/services/view-schema.service';
+import { ChildrenRendererComponent } from '../../core/renderer/children-renderer/children-renderer.component';
 
 @Component({
   selector: 'app-generic-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GenericInputComponent, GenericButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, ChildrenRendererComponent],
   templateUrl: './generic-form.component.html',
-  styleUrl: './generic-form.component.scss',
 })
 export class GenericFormComponent implements OnInit {
-  @Input() children: any[] = [];
-  @Input() action: any;
-
-  formGroup!: FormGroup;
+  @Input() node!: ViewNode;
+  
   private fb = inject(FormBuilder);
   private actionService = inject(ActionService);
 
-  ngOnInit(): void {
-    this.formGroup = this.buildForm();
-  }
+  form: FormGroup = this.fb.group({});
 
-  private buildForm(): FormGroup {
-    const group = this.fb.group({});
-    this.children.forEach((child) => {
-      if (child.component === 'text-input') {
-        group.addControl(child.config.name, this.fb.control(''));
+  ngOnInit(): void {
+    this.node.children?.forEach(field => {
+      const controlName = field.config?.['name'];
+      if (controlName) {
+        const validators = field.config?.['required'] ? [Validators.required] : [];
+        this.form.addControl(controlName, this.fb.control('', validators));
       }
     });
-    return group;
   }
 
-  getControl(name: string): FormControl {
-    return this.formGroup.get(name) as FormControl;
-  }
-
-  handleFormSubmit(): void {
-    if (this.formGroup.invalid) {
-      console.warn('Formulario inválido.');
-      return;
-    }
-    if (this.action) {
-      this.actionService.execute(this.action, this.formGroup.value);
+  onSubmit(): void {
+    if (this.form.valid && this.node.action) {
+      const actionWithPayload = { ...this.node.action, payload: this.form.value };
+      this.actionService.execute(actionWithPayload);
     }
   }
 }

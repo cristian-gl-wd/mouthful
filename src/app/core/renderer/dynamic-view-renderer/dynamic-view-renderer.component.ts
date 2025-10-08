@@ -1,43 +1,36 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import { GenericButtonComponent } from '../../../components/generic-button/generic-button.component';
-import { GenericCardComponent } from '../../../components/generic-card/generic-card.component';
-import { GenericFormComponent } from '../../../components/generic-form/generic-form.component';
-import { GenericTableComponent } from '../../../components/generic-table/generic-table.component';
-
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ViewNode, ViewSchemaService } from '../../services/view-schema.service';
+import { ViewDataService } from '../view-data.service';
+
+import { DynamicComponentDirective } from '../dynamic-component.directive';
 
 @Component({
   selector: 'app-dynamic-view-renderer',
   standalone: true,
-  imports: [
-    CommonModule,
-    GenericFormComponent,
-    GenericCardComponent,
-    GenericTableComponent,
-    GenericButtonComponent,
-  ],
+  imports: [CommonModule, AsyncPipe, DynamicComponentDirective],
   templateUrl: './dynamic-view-renderer.component.html',
+  providers: [ViewDataService],
 })
 export class DynamicViewRendererComponent {
-  private viewSchemaService = inject(ViewSchemaService);
   private route = inject(ActivatedRoute);
+  private viewSchemaService = inject(ViewSchemaService);
+  private viewDataService = inject(ViewDataService);
 
+  viewId = toSignal(this.route.data.pipe(map((data) => data['viewId'])));
   public schema$: Observable<ViewNode | null>;
 
-  constructor() {
-    this.schema$ = this.route.data.pipe(
-      map((data) => data['viewId']),
-      switchMap((id) => this.viewSchemaService.getViewSchema(id))
-    );
+  constructor() {  
+    this.schema$ = this.viewSchemaService.getViewSchema(this.viewId() ?? '');
 
     this.schema$.subscribe((schema) => {
-      if (!schema) {
-        console.error('No se encontró el esquema para la vista solicitada.');
+      if (schema) {
+        this.viewDataService.loadDataForView(schema);
       }
     });
   }

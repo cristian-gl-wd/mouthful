@@ -1,3 +1,3 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="grid-layout" [style.grid-template-columns]="columns">
   <app-children-renderer [children]="node.children ?? []"></app-children-renderer>
-</form>
+</div>

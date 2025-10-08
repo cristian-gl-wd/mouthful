@@ -1,10 +1,8 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
-
+import { Component, computed, inject, Input, Signal } from '@angular/core';
 import { TableModule } from 'primeng/table';
-
-import { DataService, DataSourceConfig } from '../../core/services/data.service';
+import { ViewDataService } from '../../core/renderer/view-data.service';
+import { ViewNode } from '../../core/services/view-schema.service';
 
 @Component({
   selector: 'app-generic-table',
@@ -12,15 +10,18 @@ import { DataService, DataSourceConfig } from '../../core/services/data.service'
   imports: [CommonModule, TableModule],
   templateUrl: './generic-table.component.html',
 })
-export class GenericTableComponent implements OnInit {
-  @Input() config: any;
-  @Input() dataSource!: DataSourceConfig;
+export class GenericTableComponent {
+  @Input() node!: ViewNode;
 
-  private dataService = inject(DataService);
+  private viewDataService = inject(ViewDataService);
 
-  public data$!: Observable<any[]>;
+  public data: Signal<any[]>;
 
-  ngOnInit(): void {
-    this.data$ = this.dataService.fetchData(this.dataSource);
+  constructor() {
+    this.data = computed(() => {
+      const viewState = this.viewDataService.viewState();
+      const dataKey = this.node.config?.['id'];
+      return dataKey ? viewState[dataKey] || [] : [];
+    });
   }
 }

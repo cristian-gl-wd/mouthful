@@ -1,9 +1,8 @@
-import { Component, Input, inject, HostListener } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ButtonModule } from 'primeng/button';
-
-import { Action, ActionService } from '../../core/services/action.service';
+import { ActionService } from '../../core/services/action.service';
+import { ViewNode } from '../../core/services/view-schema.service';
 
 @Component({
   selector: 'app-generic-button',
@@ -12,15 +11,13 @@ import { Action, ActionService } from '../../core/services/action.service';
   templateUrl: './generic-button.component.html',
 })
 export class GenericButtonComponent {
-  @Input() config: any;
-  @Input() action: Action | undefined;
+  @Input() node!: ViewNode;
 
   private actionService = inject(ActionService);
 
-  @HostListener('click')
-  onHostClick(): void {
-    if (this.action && this.config?.type !== 'submit') {
-      this.actionService.execute(this.action);
+  onClick(): void {
+    if (this.node.action) {
+      this.actionService.execute(this.node.action);
     }
   }
 }
