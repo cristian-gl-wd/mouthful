@@ -10,12 +10,6 @@ export interface ViewNode {
   action?: any;
 }
 
-export interface ViewSchema {
-  viewId: string;
-  layout: ViewNode;
-}
-
-
 @Injectable({
   providedIn: 'root',
 })
