@@ -1,0 +1,12 @@
+<p-card *ngIf="recipe" [header]="recipe.name" [subheader]="'Por ' + recipe.author">
+  <ng-template pTemplate="header">
+    <img [src]="recipe.imageUrl" alt="Foto de {{ recipe.name }}" class="recipe-image"/>
+  </ng-template>
+  <p>{{ recipe.description | slice:0:100 }}...</p>
+  <ng-template pTemplate="footer">
+    <div class="card-footer">
+      <p-tag [value]="recipe.cuisine" severity="info"></p-tag>
+      <p-button label="Ver Receta" icon="pi pi-arrow-right" iconPos="right"></p-button>
+    </div>
+  </ng-template>
+</p-card>

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, Input, Signal } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ViewDataService } from '../../core/renderer/view-data.service';
-import { ViewNode } from '../../core/services/view-schema.service';
+import { ViewDataService } from '../../../core/renderer/view-data.service';
+import { ViewNode } from '../../../core/services/view-schema.service';
 
 @Component({
   selector: 'app-generic-table',

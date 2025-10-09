@@ -1,0 +1,8 @@
+<div class="sidebar-layout">
+  <aside class="sidebar" [style.width]="sidebarWidth">
+    <app-children-renderer [children]="sidebarChildren"></app-children-renderer>
+  </aside>
+  <main class="main-content">
+    <app-children-renderer [children]="mainChildren"></app-children-renderer>
+  </main>
+</div>

@@ -1,0 +1,19 @@
+<div class="filter-panel" *ngIf="node.config as config">
+  <h3>{{ config['title'] }}</h3>
+  <p-divider></p-divider>
+  <div *ngFor="let group of config['groups']" class="filter-group">
+    <h4>{{ group.label }}</h4>
+    <div *ngIf="group.type === 'multiselect'" class="flex flex-column gap-2">
+      <div *ngFor="let option of group.options" class="field-checkbox">
+        <p-checkbox
+          [name]="group.id"
+          [value]="option.value"
+          [(ngModel)]="selectedFilters[group.id]"
+          (onChange)="onFilterChange()"
+        >
+        </p-checkbox>
+        <label>{{ option.label }}</label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,32 +1,52 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { filter } from 'rxjs/operators';
+
+import { ActionBusService, ActionEvent } from '../services/action-bus.service';
 import { DataService } from '../services/data.service';
 import { ViewNode } from '../services/view-schema.service';
 
 @Injectable()
 export class ViewDataService {
-  public viewState: WritableSignal<Record<string, any>> = signal({});
+  private dataService = inject(DataService);
+  private actionBus = inject(ActionBusService);
 
-  constructor(private dataService: DataService) {}
+  viewState = signal<Record<string, any>>({});
+  private currentSchema: ViewNode | null = null;
 
-  loadDataForView(schema: ViewNode): void {
-    const dataSourcesToFetch: Record<string, Observable<any[]>> = {};
-
-    const findDataSources = (node: ViewNode) => {
-      if (node.dataSource && node.config?.['id']) {
-        dataSourcesToFetch[node.config['id']] = this.dataService.fetchData(node.dataSource);
-      }
-      if (node.children) {
-        node.children.forEach((child) => findDataSources(child));
-      }
-    };
-
-    findDataSources(schema);
-
-    if (Object.keys(dataSourcesToFetch).length > 0) {
-      forkJoin(dataSourcesToFetch).subscribe((results) => {
-        this.viewState.set(results);
+  constructor() {
+    this.actionBus.actions$
+      .pipe(filter((action: ActionEvent) => action.type === 'FILTER_CHANGED'))
+      .subscribe((action: ActionEvent) => {
+        if (this.currentSchema) {
+          this.loadDataForView(this.currentSchema, action.payload);
+        }
       });
+  }
+
+  loadDataForView(schema: ViewNode, filters: any = {}): void {
+    this.currentSchema = schema;
+    this.walkNode(schema, (node: ViewNode) => {
+      if (node.dataSource && node.config?.['id']) {
+        const dataKey = node.config['id'];
+
+        const dynamicDataSource = { ...node.dataSource };
+        if (filters.cuisine && filters.cuisine.length > 0) {
+          dynamicDataSource.filters = [
+            { field: 'cuisine', operator: 'in', value: filters.cuisine },
+          ];
+        }
+
+        this.dataService.fetchData(dynamicDataSource).subscribe((data: any[]) => {
+          this.viewState.update((current) => ({ ...current, [dataKey]: data }));
+        });
+      }
+    });
+  }
+
+  private walkNode(node: ViewNode, callback: (node: ViewNode) => void): void {
+    callback(node);
+    if (node.children) {
+      node.children.forEach((child) => this.walkNode(child, callback));
     }
   }
 }

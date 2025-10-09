@@ -1,0 +1,15 @@
+.sidebar-layout {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+.sidebar {
+  padding: 1.5rem;
+  background-color: var(--surface-ground);
+  border-right: 1px solid var(--surface-border);
+  overflow-y: auto;
+}
+.main-content {
+  flex-grow: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}

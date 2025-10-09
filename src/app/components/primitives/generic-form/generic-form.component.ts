@@ -1,9 +1,9 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActionService } from '../../core/services/action.service';
-import { ViewNode } from '../../core/services/view-schema.service';
-import { ChildrenRendererComponent } from '../../core/renderer/children-renderer/children-renderer.component';
+import { ActionService } from '../../../core/services/action.service';
+import { ViewNode } from '../../../core/services/view-schema.service';
+import { ChildrenRendererComponent } from '../../../core/renderer/children-renderer/children-renderer.component';
 
 @Component({
   selector: 'app-generic-form',

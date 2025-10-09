@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 export interface ActionEvent {
@@ -11,11 +11,13 @@ export interface ActionEvent {
 export class ActionBusService {
   private action$ = new Subject<ActionEvent>();
 
+  public readonly actions$: Observable<ActionEvent> = this.action$.asObservable();
+
   dispatch(event: ActionEvent) {
     this.action$.next(event);
   }
 
   on(eventType: string) {
-    return this.action$.asObservable().pipe(filter((e: ActionEvent) => e.type === eventType));
+    return this.actions$.pipe(filter((e: ActionEvent) => e.type === eventType));
   }
 }

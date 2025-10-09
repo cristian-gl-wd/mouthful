@@ -2,7 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlContainer, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { ViewNode } from '../../core/services/view-schema.service';
+import { ViewNode } from '../../../core/services/view-schema.service';
 
 @Component({
   selector: 'app-generic-input',
