@@ -1,0 +1,24 @@
+<p-toolbar styleClass="main-toolbar">
+  <div class="p-toolbar-group-start">
+    <img src="mouthful.png" alt="Logo de la App" class="logo" />
+    <span class="title">Mouthful</span>
+  </div>
+
+  <div class="p-toolbar-group-center">
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search" />
+      <input type="text" pInputText placeholder="Buscar en la plataforma..." class="search-input" />
+    </p-iconfield>
+  </div>
+
+  <div class="p-toolbar-group-end">
+    <p-button icon="pi pi-bell" styleClass="p-button-rounded p-button-text" />
+    <p-button icon="pi pi-cog" styleClass="p-button-rounded p-button-text" />
+    <div class="separator"></div>
+    <span class="username">{{ userName }}</span>
+    <p-avatar
+      image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+      shape="circle"
+    />
+  </div>
+</p-toolbar>

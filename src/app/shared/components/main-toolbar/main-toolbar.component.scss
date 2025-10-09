@@ -1,0 +1,46 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-toolbar {
+  padding: 0.5rem 1.5rem;
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+
+  .p-toolbar-group-start,
+  .p-toolbar-group-center,
+  .p-toolbar-group-end {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+.logo {
+  height: 32px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.search-input {
+  width: 300px;
+}
+
+.separator {
+  width: 1px;
+  height: 24px;
+  background-color: var(--surface-border);
+  margin: 0 0.5rem;
+}
+
+.username {
+  font-weight: 500;
+  color: var(--text-color-secondary);
+}
