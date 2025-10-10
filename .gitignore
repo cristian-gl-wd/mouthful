@@ -45,3 +45,24 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# Firebase and Google Cloud
+# ---------------------------
+
+# Ignore the entire local installation of Google Cloud SDK
+google-cloud-sdk/
+
+# Ignore Firebase emulator and debug logs
+*.log
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+
+# Ignore Firebase emulators data
+.firebase/emulators/
+
+# The compiled output of your Cloud Functions
+# (Important for the 'functions' directory)
+functions/lib/
+functions/node_modules/
