@@ -1,4 +1,4 @@
-<p-card [header]="node.config?.title" [subheader]="node.config?.subtitle">
-  <p>{{ node.config?.content }}</p>
+<p-card [header]="config?.title" [subheader]="config?.subtitle">
+  <p>{{ config?.content }}</p>
   <app-children-renderer [children]="node.children ?? []"></app-children-renderer>
 </p-card>

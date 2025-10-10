@@ -2,9 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
+import { ComponentConfig } from '../models/component-configs';
+
 export interface ViewNode {
   component: string;
-  config?: any;
+  config?: ComponentConfig;
   dataSource?: any;
   children?: ViewNode[];
   action?: any;
