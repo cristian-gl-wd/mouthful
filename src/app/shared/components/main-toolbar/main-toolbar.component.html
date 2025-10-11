@@ -1,6 +1,6 @@
 <p-toolbar styleClass="main-toolbar">
   <div class="p-toolbar-group-start">
-    <img src="mouthful.png" alt="Logo de la App" class="logo" />
+    <img src="mouthful.png" alt="App logo" class="logo" />
     <span class="title">Mouthful</span>
   </div>
 
@@ -12,13 +12,15 @@
   </div>
 
   <div class="p-toolbar-group-end">
-    <p-button icon="pi pi-bell" styleClass="p-button-rounded p-button-text" />
-    <p-button icon="pi pi-cog" styleClass="p-button-rounded p-button-text" />
-    <div class="separator"></div>
-    <span class="username">{{ userName }}</span>
-    <p-avatar
-      image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-      shape="circle"
-    />
+    <p-button label="Add recipe" icon="pi pi-plus" size="large" (onClick)="navigateToAddRecipe()" />
+
+    <p-menu #menu [model]="userMenuItems" [popup]="true" />
+    <p-button (click)="menu.toggle($event)" [text]="true" severity="secondary">
+      <span class="username">Builder</span>
+      <p-avatar
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        shape="circle"
+      />
+    </p-button>
   </div>
 </p-toolbar>

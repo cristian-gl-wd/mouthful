@@ -4,18 +4,13 @@ import { DynamicViewRendererComponent } from './core/renderer/dynamic-view-rende
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: 'dashboard',
     component: DynamicViewRendererComponent,
     data: {
       viewId: 'dashboard-view'
     }
   },
   {
-    path: 'recipes/new',
+    path: 'new-recipe',
     component: DynamicViewRendererComponent,
     data: { viewId: 'recipe-form-view' }
   }
