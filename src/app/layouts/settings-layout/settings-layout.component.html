@@ -1,0 +1,10 @@
+<div class="settings-layout" *ngIf="node">
+  <aside class="settings-sidebar">
+    <h2 class="settings-title">{{ node.config?.title }}</h2>
+    <p-menu [model]="menuItems"></p-menu>
+  </aside>
+
+  <main class="settings-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 2rem;
+}
+
+.settings-layout {
+  display: flex;
+  gap: 2rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  background-color: var(--surface-card);
+  height: calc(100vh - 60px - 4rem);
+}
+
+.settings-sidebar {
+  width: 250px;
+  padding: 1.5rem;
+  border-right: 1px solid var(--surface-border);
+  flex-shrink: 0;
+}
+
+.settings-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0 0.75rem;
+}
+
+.settings-content {
+  flex-grow: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+::ng-deep .settings-sidebar .p-menu {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+}

@@ -1,32 +1,27 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ViewNode, ViewSchemaService } from '../../services/view-schema.service';
-import { ViewDataService } from '../view-data.service';
-
+import { ViewNode } from '../../services/view-schema.service';
 import { DynamicComponentDirective } from '../dynamic-component.directive';
+import { ViewDataService } from '../view-data.service';
 
 @Component({
   selector: 'app-dynamic-view-renderer',
   standalone: true,
-  imports: [CommonModule, AsyncPipe, DynamicComponentDirective],
+  imports: [CommonModule, DynamicComponentDirective],
   templateUrl: './dynamic-view-renderer.component.html',
   providers: [ViewDataService],
 })
-export class DynamicViewRendererComponent {
+export class DynamicViewRendererComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private viewSchemaService = inject(ViewSchemaService);
   private viewDataService = inject(ViewDataService);
 
-  viewId = toSignal(this.route.data.pipe(map((data) => data['viewId'])));
-  public schema$: Observable<ViewNode | null>;
-
-  constructor() {  
-    this.schema$ = this.viewSchemaService.getViewSchema(this.viewId() ?? '');
+  public schema$!: Observable<ViewNode | null | undefined>;
+  ngOnInit(): void {
+    this.schema$ = this.route.data.pipe(map((data) => data['node'] as ViewNode | null | undefined));
 
     this.schema$.subscribe((schema) => {
       if (schema) {

@@ -49,20 +49,21 @@ Thumbs.db
 # Firebase and Google Cloud
 # ---------------------------
 
-# Ignore the entire local installation of Google Cloud SDK
+# Ignora la instalación local de Google Cloud SDK
 google-cloud-sdk/
 
-# Ignore Firebase emulator and debug logs
+# Ignora la carpeta generada por Data Connect
+dataconnect-generated/
+
+# Ignora logs de emuladores y debug de Firebase
 *.log
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
 pubsub-debug.log
 
-# Ignore Firebase emulators data
+# Ignora los datos de los emuladores
 .firebase/emulators/
 
-# The compiled output of your Cloud Functions
-# (Important for the 'functions' directory)
-functions/lib/
-functions/node_modules/
+# NOTA: Las carpetas 'functions/lib' y 'functions/node_modules'
+# se ignoran en el archivo .gitignore dentro de la propia carpeta 'functions'.

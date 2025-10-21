@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, docData, Firestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-
+import { doc, docData, DocumentReference, Firestore } from '@angular/fire/firestore';
+import { Observable, of } from 'rxjs';
 import { ComponentConfig } from '../models/component-configs';
+
+export type SchemaType = 'views' | 'layouts' | 'panels';
 
 export interface ViewNode {
   component: string;
@@ -18,8 +19,17 @@ export interface ViewNode {
 export class ViewSchemaService {
   private firestore: Firestore = inject(Firestore);
 
-  getViewSchema(viewId: string): Observable<ViewNode | null> {
-    const docRef = doc(this.firestore, `view-schemas/${viewId}`);
-    return docData(docRef, { idField: 'viewId' }) as Observable<ViewNode | null>;
+  getViewSchema(
+    schemaId: string,
+    schemaType: SchemaType = 'views'
+  ): Observable<ViewNode | undefined> {
+    if (!schemaId) {
+      return of(undefined);
+    }
+    const schemaDocRef = doc(
+      this.firestore,
+      `${schemaType}/${schemaId}`
+    ) as DocumentReference<ViewNode>;
+    return docData(schemaDocRef);
   }
 }
