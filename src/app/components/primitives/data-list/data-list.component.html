@@ -1,10 +1,11 @@
-<div class="data-list-grid" *ngIf="data().length > 0">
-  <div *ngFor="let item of data()">
-    <app-children-renderer
-      [children]="[{ component: itemComponent, config: item }]"
-    ></app-children-renderer>
+<div class="data-list">
+  @if (data().length > 0) {
+  <div class="list-items">
+    @for (item of data(); track item) {
+    <app-children-renderer [children]="[{ component: itemComponent, config: item }]"></app-children-renderer>
+    }
   </div>
-</div>
-<div *ngIf="data().length === 0">
-  <p>No se han encontrado recetas.</p>
+  } @else {
+  <p class="no-data">No data</p>
+  }
 </div>
